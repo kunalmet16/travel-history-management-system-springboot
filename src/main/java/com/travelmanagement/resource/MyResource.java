@@ -18,7 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.travelmanagement.models.Country;
 import com.travelmanagement.models.Travel;
 
-import com.travelmanagement.models.Traveller;
+
 import com.travelmanagement.models.UserLogin;
 import com.travelmanagement.services.TravellerService;
 
@@ -35,45 +35,36 @@ public class MyResource {
 		return "<h1>Welcome to Travel History Management System</h1>";
 	}
 	
-		
-	
-	@GetMapping("/users/{username}/country/{country}")
-	public List<Country> getTravelsByCountry(@PathVariable("country") String country,@PathVariable("username") String username)
-	{
-		return travellerService.getTravelsByCountry(country,username);
-	}
-	
+			
 	@PostMapping("/login")
-	@ResponseBody
-	public void getUserValidity(@RequestBody UserLogin user)
+	public boolean getUserValidity(@RequestBody UserLogin user)
 	{
 		
-		 if(travellerService.getUserValidity(user)==false)
-		 {
-			 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-		 }
+		/*
+		 * if(travellerService.getUserValidity(user)==false) { throw new
+		 * ResponseStatusException(HttpStatus.UNAUTHORIZED); }
+		 */
+		return travellerService.getUserValidity(user);
 		 
 	}
 	
 	@PostMapping("/signup")
-	@ResponseBody
-	public void signup(@RequestBody UserLogin user)
+	public boolean signup(@RequestBody UserLogin user)
 	{
 		 String json=travellerService.signup(user);
 		 if(json==null)
-		 {
-			 
-			 throw new ResponseStatusException(HttpStatus.BAD_REQUEST);	
-		 }
+			 return false;
+		 return true;
+		 
 		 
 	}
 	
-	
-	@GetMapping("/users/{username}/travels/{id}")
-	public Optional<Travel> getTravel(@PathVariable("id") int id)
+	@GetMapping("/users/{username}/travels")
+	public List<Travel> getAllTravels(@PathVariable("username") String name)
 	{
-		return travellerService.getTravel(id);
+		return travellerService.getAllTravels(name);
 	}
+	
 	@PostMapping("/users/{username}/travels")
 	public void addTravels(@RequestBody Travel travel,@PathVariable("username")String username)
 	{
@@ -88,11 +79,13 @@ public class MyResource {
 		travellerService.updateTravel(travel,name,id);
 	}
 	
-	@GetMapping("/users/{username}/travels")
-	public List<Travel> getAllTravels(@PathVariable("username") String name)
+	@GetMapping("/users/{username}/country/{country}")
+	public List<Country> getTravelsByCountry(@PathVariable("country") String country,@PathVariable("username") String username)
 	{
-		return travellerService.getAllTravels(name);
+		return travellerService.getTravelsByCountry(country,username);
 	}
+	
+	
 	
 	
 	

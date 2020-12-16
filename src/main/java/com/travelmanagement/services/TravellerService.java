@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.travelmanagement.models.Country;
 import com.travelmanagement.models.Travel;
-import com.travelmanagement.models.Traveller;
+
 import com.travelmanagement.models.UserLogin;
 import com.travelmanagement.repositories.TravelRepository;
 import com.travelmanagement.repositories.UserRepository;
