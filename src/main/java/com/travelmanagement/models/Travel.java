@@ -2,6 +2,8 @@ package com.travelmanagement.models;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
+
 /*import java.util.Date;
 */
 

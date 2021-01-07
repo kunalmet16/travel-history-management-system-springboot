@@ -3,6 +3,7 @@ package com.travelmanagement.resource;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.travelmanagement.config.MessageConfig;
 import com.travelmanagement.models.Country;
 import com.travelmanagement.models.Travel;
 
@@ -28,6 +30,9 @@ public class MyResource {
 
 	@Autowired
 	TravellerService travellerService;
+	
+	@Autowired
+     RabbitTemplate template;
 	
 	@GetMapping("/")
 	public String welcome()
@@ -66,10 +71,10 @@ public class MyResource {
 	}
 	
 	@PostMapping("/users/{username}/travels")
-	public void addTravels(@RequestBody Travel travel,@PathVariable("username")String username)
+	public boolean addTravels(@RequestBody Travel travel,@PathVariable("username")String username)
 	{
 		travel.setUserlogin(new UserLogin(username,""));
-		travellerService.addTravels(travel);
+		return travellerService.addTravels(travel);
 	}
 	
 	@PutMapping("/users/{username}/travels/{id}")
@@ -84,6 +89,10 @@ public class MyResource {
 	{
 		return travellerService.getTravelsByCountry(country,username);
 	}
+	
+	
+	
+	
 	
 	
 	

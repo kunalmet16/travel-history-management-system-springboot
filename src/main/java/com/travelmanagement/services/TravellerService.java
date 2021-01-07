@@ -76,16 +76,21 @@ public class TravellerService {
 		
 	}
 
-	public void addTravels(Travel travel) {
-		travelrepository.save(travel);
+	public boolean addTravels(Travel travel) {
 		
+		  if(userRepository.findByName(travel.getUserlogin().getName())==null) 
+			  return false;
+		 
+		
+		travelrepository.save(travel);
+		return true;
 		
 	}
 
 	public void updateTravel(Travel travel,String name,int id) {
 		travel.setUserlogin(new UserLogin(name,""));
 		travel.setId(id);
-		travel.setName(name);
+		travel.setName(travelrepository.findById(id).get().getName());
 		travel.setSrc(travelrepository.findById(id).get().getSrc());
 		travel.setSt(travelrepository.findById(id).get().getSt());
 		travelrepository.save(travel);
